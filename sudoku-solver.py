@@ -33,7 +33,6 @@ def valid_cell(row, col, b):
 	count = 0
 	for i in range(row - (row % 3), row - (row % 3) + 3):
 		for j in range(col - (col % 3), col - (col % 3) + 3):
-		  print(str(i) +  str(j) + " " + str(b[i][j]))
 		  if b[i][j] == value:
 		    if count == 1:
 		      return False
@@ -51,21 +50,30 @@ def valid_board(b):
 	return valid
 
 ##########################################
-def solve_board(b):
+def solve_board(b, row, col):
+	for i in range(1,10):
+		b[row][col] = i
+		if valid_cell(row,col,b):
+			if row == 8 and col == 8:
+				return b
+			if col == 8:
+				return solve_board(b, row + 1, 0)
+			print(b)
+			return solve_board(b, row, col + 1)
+	return solve_board(b, row, col - 1)
 	
 
 ##########################################
 def print_board(b):
 	for row in range(9):
-		for row in range(9):
+		for col in range(9):
 			if b[row][col] == 0:
 				print(".", end=" ")
 			else:
 				print(b[row][col], end=" ")
-			if x == 2 or x == 5:
-				print("|", end=" ")
-			else:
-				print(" ", end=" ")
 		print()
 
+print("INPUT:")
 print_board(initial_board)
+print("OUTPUT:")
+print(solve_board(initial_board,0,0))
